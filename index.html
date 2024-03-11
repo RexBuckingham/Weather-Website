@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+
+    <link  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-Bsp3uh4I9jqKccPo/I1+0jgybKG7tlrgI5/YYQ2yRoc48dyGsYN0z4rMQmgWO8Ff" crossorigin="anonymous">
+
+    <link rel="icon" href="/weathersun.ico" type="image/x-icon">
+
+    <style>
+
+        body{
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: beige;
+            background-image: url(https://i.pinimg.com/originals/27/71/dc/2771dc2f667569f01222d7c26a917ac4.jpg);
+            
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 10px 10px 10px rgba( 0, 0, 0.11);
+            background-color: skyblue;
+            
+        }
+        footer{
+            position: absolute; 
+            bottom: 10px; 
+            right: 10px;  
+            display: flex; 
+            align-items: center; 
+            gap: 5px;
+        }
+        span{
+            position: absolute;
+            top: 10px; /* Adjust as needed */
+            left: 50%;
+            transform: translateX(-50%);
+            
+        }
+        .github-link {
+            color: black; /* Adjust the color as needed */
+            font-size: 24px; /* Adjust the size as needed */
+            margin-right: 10px; /* Add spacing between the icon and other elements */
+        }
+        
+    </style>
+</head>
+<body>
+
+    <span id="dateAndTime"></span>
+
+    <div class="container">
+
+        <h1>Weather :)</h1>
+        <p>Enter your location:</p>
+        <input type=" text" id="cityInput" placeholder="Enter city name">
+        <button onclick="getWeather()">Get Weather</button>
+        <div id="weatherInfo"></div>
+     
+        <a href="https://github.com/RexBuckingham" target="_blank" class="github-link">
+            <i class="fab fa-github"></i> <!-- Font Awesome GitHub icon -->
+        </a>
+
+
+        <footer> 
+            <a href="https://github.com/RexBuckingham" target="_blank" class="github-link">
+                <i class="fab fa-github"></i>
+            </a>
+            &copy; NSK2024. All Rights Reserved. </footer>
+    </div>
+    
+    <script>
+        function getWeather(){
+            const city = document.getElementById("cityInput").value;
+            const apiKey= "98109c97db316b41c0bbb0641fb5bcae";
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${"98109c97db316b41c0bbb0641fb5bcae"}&units=metric`;
+
+
+            fetch(url)
+             .then(response => response.json())
+             .then(data =>{
+                 const weatherInfo = document.getElementById("weatherInfo");
+                 weatherInfo.innerHTML = `
+                  <h2>${data.name}</h2>
+                  <p>${data.weather[0].description}</p>
+                  <p>Temperature: ${data.main.temp}°C</p>
+                  <p>Humidity: ${data.main.humidity}%</p>
+                  `;
+
+             })
+             .catch(error => {
+                console.error("Error fetching weather data:", error);
+                const weatherInfo = document.getElementById("weatherInfo");
+                weatherInfo.innerHTML = "<p>Failed to fetch weather data. Please try again later</p>";
+             });
+
+        }
+
+        function displayDateTime() {
+            const dateAndTimeElement = document.getElementById("dateAndTime");
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+            const formattedDateTime = now.toLocaleString('en-US', options);
+            dateAndTimeElement.textContent = formattedDateTime;
+        }
+
+        // Call displayDateTime function to initially display date and time
+        displayDateTime();
+
+        // Update date and time every second
+        setInterval(displayDateTime, 1000);
+
+    </script>
+</body>
+</html>
