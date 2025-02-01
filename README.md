@@ -1,2 +1,3 @@
-# pleasework
-its not working
+#Weather-Website
+
+Built using HTML5,CSS and JavaScript.
